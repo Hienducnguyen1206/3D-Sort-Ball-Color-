@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
     [SerializeField] GameObject LevelItemPrefab;
     public GameObject LevelItemContainer;
-    [SerializeField] Button OpenMenuIngameBtn;  
+    public Button OpenMenuIngameBtn;  
     public Button ContinueCurrentLevelBtn;
     public Button StartNewLevelBtn;
     public GameObject LevelCompletedPopup;

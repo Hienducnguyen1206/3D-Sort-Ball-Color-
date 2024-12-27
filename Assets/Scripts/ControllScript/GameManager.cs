@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {    
        
-      //  PlayerPrefs.SetInt("NumberLevelUnlocked", 0);
+      // PlayerPrefs.SetInt("NumberLevelUnlocked", 0);
         currentMaxLevel = PlayerPrefs.GetInt("NumberLevelUnlocked", 0);
         MoveBallCompleted = true;
         currentLevel = 0;
@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviour
 
         
         UIManager.instance.LevelCompletedPopup.gameObject.SetActive(true);
-
+        UIManager.instance.OpenMenuIngameBtn.gameObject.SetActive(false);
         GameObject levelContainer = UIManager.instance.transform.GetComponent<UIManager>().LevelItemContainer.gameObject;
         levelContainer.transform.GetChild(currentLevel).GetComponent<LevelCard>().Playing = false;
         if (currentLevel == currentMaxLevel) {
