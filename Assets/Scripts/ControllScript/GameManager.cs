@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {   
@@ -63,12 +64,20 @@ public class GameManager : MonoBehaviour
 
     public void BoxAction()
     {
+       
+
         if (Input.GetMouseButtonDown(0) ) 
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+               
+                return; 
+            }
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit) && MoveBallCompleted == true)
             {   
                 if(hit.collider.gameObject.transform.parent == null || hit.collider.transform.parent.transform.parent == null)
                 {
@@ -76,45 +85,35 @@ public class GameManager : MonoBehaviour
                 }
                 GameObject clickedObject = hit.collider.gameObject.transform.parent.transform.parent.gameObject;
 
-                if (clickedObject == null) return;
-                
-
-                
-                if ( clickedObject.gameObject.CompareTag("Box") && MoveBallCompleted ==true  )
-                {  
-                    if(clickedObject != selectedBox1)
-                    {
-                        if (selectedBox1 == null)
+            
+                if ( clickedObject.gameObject.CompareTag("Box") )
+                {
+                         AudioManager.instance.PlayButtonSFX();
+                        if (selectedBox1 == null && clickedObject.transform.childCount > 1 )
                         {
-                            selectedBox1 = clickedObject;
-
-                           selectedBox1.gameObject.transform.GetChild(0).gameObject.transform.GetChild(5).gameObject.GetComponent<TextMeshPro>().text = "1";
-                          
-                            return;
-                        } else {
+                           selectedBox1 = clickedObject;
+                        selectedBox1.gameObject.transform.GetChild(0).gameObject.transform.GetChild(5).gameObject.GetComponent<TextMeshPro>().text = "1";
+                        return;
+                        } else if (selectedBox1 != null && clickedObject != selectedBox1)
+                        {
                             selectedBox2 = clickedObject;
                             selectedBox2.gameObject.transform.GetChild(0).gameObject.transform.GetChild(5).gameObject.GetComponent<TextMeshPro>().text = "2";
-                             
-                            GameObject levelContainer = UIManager.instance.transform.GetComponent<UIManager>().LevelItemContainer.gameObject;
+                        GameObject levelContainer = UIManager.instance.transform.GetComponent<UIManager>().LevelItemContainer.gameObject;
                             levelContainer.transform.GetChild(currentLevel).GetComponent<LevelCard>().Playing = true;
-
+                            
+                         
                             PerformAction(selectedBox1, selectedBox2);
                             MoveBallInBackend(currentLevel,selectedBox1.transform.GetSiblingIndex(),selectedBox2.transform.GetSiblingIndex());
 
-                            
-                           
-                           
                         }
-                    }
+                        else if( selectedBox1 == clickedObject ) {
+                        
+                           ResetSelectedBox();
+                        }
                     
-                }else if(MoveBallCompleted == false)
-                {
-                    selectedBox1 = null;
-                    selectedBox2 = null;
+                    
                 }
-
-                
-                
+              
             }
         }
     }
@@ -133,6 +132,10 @@ public class GameManager : MonoBehaviour
             Ball b = levelDesign.levels[Level].boxes[BoxIndex1].PopBall();
             levelDesign.levels[Level].boxes[BoxIndex2].PushBall(b);
         }
+        else
+        {
+            ResetSelectedBox();
+        }
        
     }
 
@@ -147,7 +150,7 @@ public class GameManager : MonoBehaviour
         }
 
 
-        Debug.Log("haahha");
+        
         UIManager.instance.LevelCompletedPopup.gameObject.SetActive(true);
 
         GameObject levelContainer = UIManager.instance.transform.GetComponent<UIManager>().LevelItemContainer.gameObject;
@@ -180,20 +183,23 @@ public class GameManager : MonoBehaviour
             selectedBox2.gameObject.transform.GetChild(0).gameObject.transform.GetChild(5).gameObject.GetComponent<TextMeshPro>().text = "";
             selectedBox1 = null;
             selectedBox2 = null;
+        }else if(selectedBox1 != null)
+        {
+            selectedBox1.gameObject.transform.GetChild(0).gameObject.transform.GetChild(5).gameObject.GetComponent<TextMeshPro>().text = "";
+            selectedBox1 = null;
         }
     }
 
     public void RestartCurrentLevel()
     {
-       
+       ResetSelectedBox();
         GameLevelList.instance.RestartLevel(currentLevel);
         LevelDesign.Instance.ResetLevelState(currentLevel);
     }
 
     public void NextLevel()
     {
-        selectedBox1 = null;
-        selectedBox2 = null;
+        ResetSelectedBox();
         currentLevel += 1;
         if (currentLevel < GameLevelList.instance.gameObject.transform.childCount)
         {

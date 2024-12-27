@@ -37,8 +37,8 @@ public class SceneBall : MonoBehaviour
         _rb.isKinematic = true;
 
         Sequence mySequence = DOTween.Sequence();      
-        mySequence.Append(transform.DOMoveY(height, 0.5f).SetEase(Ease.Linear));
-        mySequence.Append(transform.DOLocalMoveX(0, 0.5f).SetEase(Ease.Linear));
+        mySequence.Append(transform.DOMoveY(height, 0.2f).SetEase(Ease.Linear));
+        mySequence.Append(transform.DOLocalMoveX(0, 0.4f).SetEase(Ease.Linear));
         mySequence.OnComplete(() =>
         {
             _rb.isKinematic = false;

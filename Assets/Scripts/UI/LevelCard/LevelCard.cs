@@ -89,7 +89,7 @@ public class LevelCard : MonoBehaviour
         GameLevelList.instance.DisableAllChild();
         GameLevelList.instance.gameObject.transform.GetChild(LevelNum).gameObject.SetActive(true);
         UIManager.instance.IngameDialog.gameObject.SetActive(false);
-        
+        GameManager.instance.ResetSelectedBox();
     }
 
     public void ContinueCurrentLevel()
@@ -103,6 +103,7 @@ public class LevelCard : MonoBehaviour
         GameLevelList.instance.DisableAllChild();
         GameLevelList.instance.gameObject.transform.GetChild(LevelNum).gameObject.SetActive(true);
         UIManager.instance.IngameDialog.gameObject.SetActive(false);
-       
+        GameManager.instance.ResetSelectedBox();
+
     }
 }
