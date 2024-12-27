@@ -72,9 +72,10 @@ public class LevelCard : MonoBehaviour
 
     public void SetLevelCardImage(int levelNum)
     {
-        string path = "Assets/GameAssets/LevelImage/" + ("Level"+ levelNum.ToString()) + ".png";
-        Sprite levelSprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+        string path =  ("Level" + levelNum.ToString());
+        Sprite levelSprite = Resources.Load<Sprite>(path);
         LevelImage.sprite = levelSprite;
+
     }
 
     public void StartNewLevel()

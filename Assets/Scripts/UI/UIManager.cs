@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     public Button StartNewLevelBtn;
     public GameObject LevelCompletedPopup;
     public GameObject IngameDialog;
+    public GameObject CommingSoonPopUp;
     // Start is called before the first frame update
 
 

@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {    
        
-       // PlayerPrefs.SetInt("NumberLevelUnlocked", 0);
+      //  PlayerPrefs.SetInt("NumberLevelUnlocked", 0);
         currentMaxLevel = PlayerPrefs.GetInt("NumberLevelUnlocked", 0);
         MoveBallCompleted = true;
         currentLevel = 0;
@@ -64,7 +64,10 @@ public class GameManager : MonoBehaviour
 
     public void BoxAction()
     {
-       
+        if (Input.GetMouseButtonDown(1)) {
+            ResetSelectedBox();
+            AudioManager.instance.PlayButtonSFX();
+        }
 
         if (Input.GetMouseButtonDown(0) ) 
         {
@@ -188,6 +191,7 @@ public class GameManager : MonoBehaviour
             selectedBox1.gameObject.transform.GetChild(0).gameObject.transform.GetChild(5).gameObject.GetComponent<TextMeshPro>().text = "";
             selectedBox1 = null;
         }
+        
     }
 
     public void RestartCurrentLevel()
@@ -197,6 +201,14 @@ public class GameManager : MonoBehaviour
         LevelDesign.Instance.ResetLevelState(currentLevel);
     }
 
+    public void RestartPreviosLevel()
+    {   currentLevel -=1;
+        ResetSelectedBox();
+        GameLevelList.instance.RestartLevel(currentLevel);
+        LevelDesign.Instance.ResetLevelState(currentLevel);
+    }
+
+
     public void NextLevel()
     {
         ResetSelectedBox();
@@ -205,6 +217,12 @@ public class GameManager : MonoBehaviour
         {
             GameLevelList.instance.DisableAllChild();
             GameLevelList.instance.gameObject.transform.GetChild(currentLevel).gameObject.SetActive(true);
+            RestartCurrentLevel();
+        }
+        else
+        {
+            UIManager.instance.CommingSoonPopUp.SetActive(true);
+            UIManager.instance.CommingSoonPopUp.transform.GetComponent<CommingSoonPopup>().ShowMenu();
         }
 
     }
