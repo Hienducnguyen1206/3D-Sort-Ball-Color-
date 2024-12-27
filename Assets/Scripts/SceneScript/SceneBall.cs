@@ -21,11 +21,14 @@ public class SceneBall : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision == null) return;
+        if (collision == null || collision.gameObject.transform.position.y > transform.position.y) return;
 
         if (collision.gameObject.CompareTag("Ball") || collision.gameObject.name == "Bottom")
         {
             GameManager.instance.MoveBallCompleted = true;
+            GameManager.instance.CheckLevelCompleted(GameManager.instance.currentLevel);
+            GameManager.instance.ResetSelectedBox();
+            
         }
     }
 

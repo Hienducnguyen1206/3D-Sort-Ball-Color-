@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,7 @@ public class LevelCard : MonoBehaviour
     public bool Unlocked;
     public bool Playing;
     public Image BlockImage;
+    public TextMeshProUGUI levelText;
 
 
     // Start is called before the first frame update
@@ -61,13 +63,7 @@ public class LevelCard : MonoBehaviour
        
     }
 
-    public void DisableAllChildren(GameObject parent)
-    {
-        foreach (Transform child in parent.transform)
-        {
-            child.gameObject.SetActive(false);
-        }
-    }
+  
 
     public void SetLevelNum(int levelNum)
     {
@@ -88,8 +84,9 @@ public class LevelCard : MonoBehaviour
         GameManager.instance.RestartCurrentLevel();
         SecondCamera.instance.gameObject.SetActive(false);
         LevelSelectMenu.instance.gameObject.SetActive(false);
+        LevelSelectMenu.instance.HideMenu();
         UIManager.instance.TurnOnInGameBtn();
-        DisableAllChildren(GameLevelList.instance.gameObject);
+        GameLevelList.instance.DisableAllChild();
         GameLevelList.instance.gameObject.transform.GetChild(LevelNum).gameObject.SetActive(true);
         UIManager.instance.IngameDialog.gameObject.SetActive(false);
         
@@ -101,8 +98,9 @@ public class LevelCard : MonoBehaviour
         GameManager.instance.SetCurrnetLevel(LevelNum);
         SecondCamera.instance.gameObject.SetActive(false);
         LevelSelectMenu.instance.gameObject.SetActive(false);
+        LevelSelectMenu.instance.HideMenu();
         UIManager.instance.TurnOnInGameBtn();
-        DisableAllChildren(GameLevelList.instance.gameObject);
+        GameLevelList.instance.DisableAllChild();
         GameLevelList.instance.gameObject.transform.GetChild(LevelNum).gameObject.SetActive(true);
         UIManager.instance.IngameDialog.gameObject.SetActive(false);
        

@@ -7,12 +7,7 @@ using UnityEngine;
 public class Level
 {
     
-    public List<Box> boxes = new List<Box>();
-    public int HighScore;
-    public int MediumScore;
-    public int LowScore;
-
-   
+    public List<Box> boxes = new List<Box>(); 
 }
 
 public class LevelDesign : MonoBehaviour

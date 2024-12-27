@@ -8,10 +8,11 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
     [SerializeField] GameObject LevelItemPrefab;
     public GameObject LevelItemContainer;
-    [SerializeField] Button OpenMenuIngameBtn;
-    public GameObject IngameDialog;
+    [SerializeField] Button OpenMenuIngameBtn;  
     public Button ContinueCurrentLevelBtn;
     public Button StartNewLevelBtn;
+    public GameObject LevelCompletedPopup;
+    public GameObject IngameDialog;
     // Start is called before the first frame update
 
 
@@ -52,10 +53,6 @@ public class UIManager : MonoBehaviour
 
             }
            
-
-
-
-
             LevelItem.transform.SetParent(LevelItemContainer.transform,false);
             
             LevelCard levelCard = LevelItem.GetComponent<LevelCard>();
@@ -63,6 +60,7 @@ public class UIManager : MonoBehaviour
             {
                 levelCard.SetLevelNum(i);
                 levelCard.SetLevelCardImage(i);
+                levelCard.levelText.text = "Level" + " " + (i + 1).ToString();
             }
         }
     }
@@ -71,4 +69,9 @@ public class UIManager : MonoBehaviour
     {
         OpenMenuIngameBtn.gameObject.SetActive(true);
     }
+
+    
+
+
+
 }
