@@ -19,10 +19,10 @@ public class GameManager : MonoBehaviour
 
     public LevelDesign levelDesign;
     public bool MoveBallCompleted;
-    public bool GamePlaying = false;
+
     public int currentMaxLevel;
 
-    [SerializeField] int currentLevel;
+    public int currentLevel;
     
 
     // Start is called before the first frame update
@@ -40,8 +40,9 @@ public class GameManager : MonoBehaviour
         }
     }
     void Start()
-    {
-      //  PlayerPrefs.SetInt("NumberLevelUnlocked", 0);
+    {    
+       
+       // PlayerPrefs.SetInt("NumberLevelUnlocked", 0);
         currentMaxLevel = PlayerPrefs.GetInt("NumberLevelUnlocked", 0);
         MoveBallCompleted = true;
         currentLevel = 0;
@@ -90,8 +91,10 @@ public class GameManager : MonoBehaviour
                             return;
                         } else {
                             selectedBox2 = clickedObject;
-                          //  Debug.Log(selectedBox2 + "box2 đã được chọn");
-                            GamePlaying = true;
+                            //  Debug.Log(selectedBox2 + "box2 đã được chọn");
+                            GameObject levelContainer = UIManager.instance.transform.GetComponent<UIManager>().LevelItemContainer.gameObject;
+                            levelContainer.transform.GetChild(currentLevel).GetComponent<LevelCard>().Playing = true;
+
                             PerformAction(selectedBox1, selectedBox2);
                             MoveBallInBackend(currentLevel,selectedBox1.transform.GetSiblingIndex(),selectedBox2.transform.GetSiblingIndex());
                             CheckLevelCompleted(currentLevel);
@@ -135,11 +138,18 @@ public class GameManager : MonoBehaviour
             }
            
         }
+
+
         Debug.Log("Level completed");
+        GameObject levelContainer = UIManager.instance.transform.GetComponent<UIManager>().LevelItemContainer.gameObject;
+        levelContainer.transform.GetChild(currentLevel).GetComponent<LevelCard>().Playing = false;
         if (currentLevel == currentMaxLevel) {
             currentMaxLevel = currentLevel+1;
             PlayerPrefs.SetInt("NumberLevelUnlocked",currentMaxLevel);
-            GameObject levelContainer = UIManager.instance.transform.GetComponent<UIManager>().LevelItemContainer.gameObject;
+           
+
+          
+
             if (levelContainer.transform.GetChild(currentMaxLevel) != null) {
                 levelContainer.transform.GetChild(currentMaxLevel).GetComponent<LevelCard>().BlockImage.gameObject.SetActive(false);
             }
@@ -155,7 +165,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartCurrentLevel()
     {
-        GamePlaying = false;
+       
         GameLevelList.instance.RestartLevel(currentLevel);
         LevelDesign.Instance.ResetLevelState(currentLevel);
     }

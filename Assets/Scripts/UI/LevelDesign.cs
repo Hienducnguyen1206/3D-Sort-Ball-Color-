@@ -6,9 +6,11 @@ using UnityEngine;
 [System.Serializable]
 public class Level
 {
-    public int numberOfBox;
+    
     public List<Box> boxes = new List<Box>();
-
+    public int HighScore;
+    public int MediumScore;
+    public int LowScore;
 
    
 }

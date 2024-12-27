@@ -10,6 +10,7 @@ public class LevelCard : MonoBehaviour
     [SerializeField] Image LevelImage;
     [SerializeField] int LevelNum;
     public bool Unlocked;
+    public bool Playing;
     public Image BlockImage;
 
 
@@ -19,18 +20,40 @@ public class LevelCard : MonoBehaviour
         
         
         levelBtn.onClick.AddListener(() =>
-        {
-           UIManager.instance.IngameDialog.gameObject.SetActive(true);
-           UIManager.instance.StartNewLevelBtn.onClick.RemoveAllListeners();
-           UIManager.instance.ContinueCurrentLevelBtn.onClick.RemoveAllListeners();
-           UIManager.instance.StartNewLevelBtn.onClick.AddListener(StartNewLevel);
-           UIManager.instance.ContinueCurrentLevelBtn.onClick.AddListener(ContinueCurrentLevel);
+        {  
+            
+
+
+            if (GameManager.instance.currentLevel == LevelNum ) {
+
+                if (Playing == false) { 
+                    StartNewLevel();
+                }
+                else
+                {
+                    UIManager.instance.IngameDialog.gameObject.SetActive(true);
+                    UIManager.instance.StartNewLevelBtn.onClick.RemoveAllListeners();
+                    UIManager.instance.ContinueCurrentLevelBtn.onClick.RemoveAllListeners();
+                    UIManager.instance.StartNewLevelBtn.onClick.AddListener(StartNewLevel);
+                    UIManager.instance.ContinueCurrentLevelBtn.onClick.AddListener(ContinueCurrentLevel);
+                }
+
+               
+            }
+            else 
+            {
+                StartNewLevel();
+
+            }
+           
 
         });
 
         
         
     } 
+
+
 
     // Update is called once per frame
     void Update()
